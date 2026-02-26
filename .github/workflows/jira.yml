@@ -10,9 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Trigger Jira Webhook
-        run: |
-          curl -X POST \
-            -H "Content-type: application/json" \
-            -H "X-Automation-Webhook-Token: ${{ secrets.JIRA_WEBHOOK_TOKEN }}" \
-            https://api-private.atlassian.com/automation/webhooks/jira/a/3e3010d6-8973-4ecb-b7cd-d50a4731f45b/019c967f-91fd-7489-a6da-7e3fd8affc57
+     - name: Trigger Jira Webhook
+  run: |
+    curl -X POST \
+      -H "Content-type: application/json" \
+      -H "X-Automation-Webhook-Token: ${{ secrets.JIRA_WEBHOOK_TOKEN }}" \
+      --data "{\"branch\":\"${GITHUB_REF##*/}\"}" \
+      https://api-private.atlassian.com/automation/webhooks/jira/a/3e3010d6-8973-4ecb-b7cd-d50a4731f45b/019c967f-91fd-7489-a6da-7e3fd8affc57
