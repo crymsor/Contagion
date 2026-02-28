@@ -1,39 +1,67 @@
 import AiEvaluationScore from "./AiEvaluationScore";
 
 function Submitted({ name, description, status, family, threatLevel, aiScorePercentage, reviewCount, date }) {
+  // Logic to determine threat color based on the design system
+  const getThreatColor = (level) => {
+    const l = level?.toLowerCase();
+    if (l?.includes('high') || l?.includes('critical')) return 'text-red-500 border-red-900 bg-red-900/10';
+    if (l?.includes('medium') || l?.includes('elevated')) return 'text-amber-500 border-amber-900 bg-amber-900/10';
+    return 'text-cyan-400 border-cyan-900 bg-cyan-900/10';
+  };
+
   return (
-    <>
-      <div id="submittedUpperPart">
-        <div id="submittedTitleLine">
-          <h2 id="submittedName">{name}</h2>
-          <p id="submittedStatus">{status}</p>
+    <div className="bg-obsidian border border-phantom rounded-lg p-6 shadow-xl max-w-2xl transition-all hover:border-toxic/30 group">
+      {/* Upper Part: Title and Status */}
+      <div id="submittedUpperPart" className="mb-4">
+        <div id="submittedTitleLine" className="flex justify-between items-start mb-1">
+          <h2 id="submittedName" className="text-slate-100 text-2xl font-bold tracking-tight">
+            {name}
+          </h2>
+          <p id="submittedStatus" className="text-slate-600 text-[10px] uppercase tracking-[0.2em] font-black pt-2">
+            {status}
+          </p>
         </div>
-
-        <h3 id="submittedDescription">{description}</h3>
+        <h3 id="submittedDescription" className="text-slate-400 text-sm font-medium leading-relaxed">
+          {description}
+        </h3>
       </div>
 
-      <div id="submittedTags">
-        <p id="submittedFamily">{family}</p>
-        <p id="submittedThreatLevel">{threatLevel}</p>
+      {/* Tags Section */}
+      <div id="submittedTags" className="flex gap-3 mb-6">
+        <p id="submittedFamily" className="text-toxic bg-green-900/20 border border-green-900/50 px-3 py-1 rounded text-xs font-mono uppercase">
+          {family}
+        </p>
+        <p id="submittedThreatLevel" className={`px-3 py-1 rounded text-xs font-mono uppercase border ${getThreatColor(threatLevel)}`}>
+          THREAT: {threatLevel}
+        </p>
       </div>
 
-      <AiEvaluationScore percentage={aiScorePercentage} />
+      {/* AI Evaluation Section */}
+      <div className="mb-6 bg-slate-dark/50 p-4 rounded-md border border-phantom/50">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-[10px] text-viral font-bold uppercase tracking-widest">Neural Analysis</span>
+        </div>
+        <AiEvaluationScore percentage={aiScorePercentage} />
+      </div>
 
-      <hr />
+      <hr className="border-phantom mb-4" />
 
-      <div id="submittedBottomPart">
-        <div id="submittiedBottomLeft">
+      {/* Bottom Part: Metadata and CTA */}
+      <div id="submittedBottomPart" className="flex justify-between items-center">
+        <div id="submittiedBottomLeft" className="flex items-center gap-2 text-slate-500 text-xs font-medium">
           <p id="submittedReviewCount">{reviewCount} peer reviews</p>
-          <p id="submittedDividingCircle">•</p>
-          <p id="submittedDate">{date}</p>
+          <p id="submittedDividingCircle" className="text-phantom">•</p>
+          <p id="submittedDate" className="font-mono">{date}</p>
         </div>
+
         <div id="submittedBottomRightPart">
-          <p id="submittedViewDetails">View Details</p>
+          <button id="submittedViewDetails" className="text-toxic hover:text-green-300 text-xs font-bold uppercase tracking-widest transition-colors flex items-center gap-1 group-hover:translate-x-1 duration-200">
+            View Details <span>→</span>
+          </button>
         </div>
       </div>
-
-    </>
-  )
+    </div>
+  );
 }
 
 export default Submitted;

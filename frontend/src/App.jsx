@@ -4,14 +4,15 @@ import LoginPage from './AppLayout/Auth/LoginPage';
 import RegisterPage from './AppLayout/Auth/RegisterPage';
 import ForgotPasswordPage from './AppLayout/Auth/ForgotPasswordPage';
 import DashboardPage from './AppLayout/Dashboard/DashboardPage';
+import SubmissionsPage from './AppLayout/SubmissionsPage/SubmissionsPage';
 
 /* ── Custom cursor ─────────────────────────────────────────── */
 const Cursor = () => {
-  const dotRef  = useRef(null);
+  const dotRef = useRef(null);
   const ringRef = useRef(null);
-  const posRef  = useRef({ x: -100, y: -100 });
+  const posRef = useRef({ x: -100, y: -100 });
   const ringPos = useRef({ x: -100, y: -100 });
-  const rafId   = useRef(null);
+  const rafId = useRef(null);
 
   useEffect(() => {
     const onMove = (e) => {
@@ -24,13 +25,13 @@ const Cursor = () => {
     const loop = () => {
       if (dotRef.current) {
         dotRef.current.style.left = `${posRef.current.x}px`;
-        dotRef.current.style.top  = `${posRef.current.y}px`;
+        dotRef.current.style.top = `${posRef.current.y}px`;
       }
       if (ringRef.current) {
         ringPos.current.x = lerp(ringPos.current.x, posRef.current.x, 0.12);
         ringPos.current.y = lerp(ringPos.current.y, posRef.current.y, 0.12);
         ringRef.current.style.left = `${ringPos.current.x}px`;
-        ringRef.current.style.top  = `${ringPos.current.y}px`;
+        ringRef.current.style.top = `${ringPos.current.y}px`;
       }
       rafId.current = requestAnimationFrame(loop);
     };
@@ -61,7 +62,7 @@ const Cursor = () => {
 
   return (
     <>
-      <div ref={dotRef}  className="custom-cursor" />
+      <div ref={dotRef} className="custom-cursor" />
       <div ref={ringRef} className="custom-cursor-ring" />
     </>
   );
@@ -77,6 +78,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/submissions" element={<SubmissionsPage />} />
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </BrowserRouter>
