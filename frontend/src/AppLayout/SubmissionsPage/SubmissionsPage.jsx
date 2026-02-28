@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import SearchBar from "./Components/SearchBar";
 import Submitted from "./Components/Submitted";
 
