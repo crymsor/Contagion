@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import SearchBar from "./Components/SearchBar";
 import Submitted from "./Components/Submitted";
+import AiEvaluationModal from "./Components/AiEvaluationModal";
+import { useNavigate } from "react-router-dom";
 
 const INITIAL_SUBMISSIONS = [
   { id: 1, name: "WannaCry Network Patterns", description: "Analysis of SMB exploitation.", status: "Under Review", family: "Ransomware", threatLevel: "Critical", aiScorePercentage: "98%", reviewCount: 2, date: "2024-02-13" },
@@ -10,15 +12,36 @@ const INITIAL_SUBMISSIONS = [
 ];
 
 function SubmissionsPage() {
+  const navigate = useNavigate();
   const [filters, setFilters] = useState({
     query: "",
     status: "all",
     family: "all"
   });
+  
+  const [selectedSubmission, setSelectedSubmission] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Update the filter state
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));
+  };
+
+  const handleOpenEvaluation = (submission) => {
+    setSelectedSubmission(submission);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedSubmission(null);
+  };
+
+  const handleViewFullReport = () => {
+    if (selectedSubmission) {
+      navigate(`/submissions/${selectedSubmission.id}/ai-evaluation`);
+    }
+    handleCloseModal();
   };
 
   // The Filtering Logic
@@ -57,7 +80,11 @@ function SubmissionsPage() {
         </div>
 
         {filteredSubmissions.map((item) => (
-          <Submitted key={item.id} {...item} />
+          <Submitted 
+            key={item.id} 
+            {...item} 
+            onOpenAiEval={() => handleOpenEvaluation(item)}
+          />
         ))}
 
         {filteredSubmissions.length === 0 && (
@@ -66,6 +93,31 @@ function SubmissionsPage() {
           </div>
         )}
       </div>
+
+      {selectedSubmission && (
+        <AiEvaluationModal 
+          isOpen={isModalOpen}
+          onRequestClose={handleCloseModal}
+          evaluationResult={
+            <div className="space-y-4">
+              <p className="text-slate-400 text-sm">Summary for <span className="text-toxic">{selectedSubmission.name}</span></p>
+              <div className="bg-void p-4 border border-phantom rounded">
+                <p className="text-xs font-mono text-slate-300">
+                  Automated analysis confirms <span className="text-red-500">{selectedSubmission.threatLevel}</span> threat level 
+                  with a neural confidence of <span className="text-toxic">{selectedSubmission.aiScorePercentage}</span>. 
+                  Recommended action: Immediate quarantine and further deep-dive analysis.
+                </p>
+              </div>
+              <button 
+                onClick={handleViewFullReport}
+                className="w-full bg-toxic text-void font-black py-2 rounded-sm uppercase tracking-widest text-[10px] hover:bg-toxic/80 transition-all"
+              >
+                View Full Neural Report
+              </button>
+            </div>
+          }
+        />
+      )}
     </div>
   );
 }

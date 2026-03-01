@@ -1,6 +1,9 @@
 import AiEvaluationScore from "./AiEvaluationScore";
+import { useNavigate } from "react-router-dom";
 
-function Submitted({ name, description, status, family, threatLevel, aiScorePercentage, reviewCount, date }) {
+function Submitted({ id, name, description, status, family, threatLevel, aiScorePercentage, reviewCount, date, onOpenAiEval }) {
+  const navigate = useNavigate();
+
   // Logic to determine threat color based on the design system
   const getThreatColor = (level) => {
     const l = level?.toLowerCase();
@@ -39,7 +42,16 @@ function Submitted({ name, description, status, family, threatLevel, aiScorePerc
       {/* AI Evaluation Section */}
       <div className="mb-6 bg-slate-dark/50 p-4 rounded-md border border-phantom/50">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[10px] text-viral font-bold uppercase tracking-widest">Neural Analysis</span>
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-toxic animate-pulse"></div>
+            <span className="text-[10px] text-viral font-bold uppercase tracking-widest">Neural Analysis</span>
+          </div>
+          <button 
+            onClick={onOpenAiEval}
+            className="text-[9px] text-toxic hover:underline font-mono uppercase tracking-tighter"
+          >
+            Launch Neural Summary
+          </button>
         </div>
         <AiEvaluationScore percentage={aiScorePercentage} />
       </div>
@@ -54,7 +66,13 @@ function Submitted({ name, description, status, family, threatLevel, aiScorePerc
           <p id="submittedDate" className="font-mono">{date}</p>
         </div>
 
-        <div id="submittedBottomRightPart">
+        <div id="submittedBottomRightPart" className="flex gap-4">
+          <button 
+            onClick={onOpenAiEval}
+            className="bg-toxic/10 hover:bg-toxic/20 text-toxic border border-toxic/30 px-3 py-1.5 rounded-sm text-[10px] font-black uppercase tracking-widest transition-all"
+          >
+            AI EVAL
+          </button>
           <button id="submittedViewDetails" className="text-toxic hover:text-green-300 text-xs font-bold uppercase tracking-widest transition-colors flex items-center gap-1 group-hover:translate-x-1 duration-200">
             View Details <span>→</span>
           </button>

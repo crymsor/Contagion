@@ -12,8 +12,9 @@ export const AuthProvider = ({ children }) => {
     try {
       // Simulate API call
       console.log('Login attempt:', { email, password });
-      // Mock successful login
-      setUser({ email, name: 'Test User' });
+      // Mock successful login - if email contains 'admin', make them an admin
+      const isAdmin = email.toLowerCase().includes('admin');
+      setUser({ email, name: isAdmin ? 'Admin User' : 'Standard User', isAdmin });
       return { success: true };
     } catch (error) {
       console.error('Login error:', error);
@@ -29,7 +30,8 @@ export const AuthProvider = ({ children }) => {
     try {
       console.log('Register attempt:', userData);
       // Mock successful registration
-      setUser({ email: userData.email, name: userData.name });
+      const isAdmin = userData.email.toLowerCase().includes('admin');
+      setUser({ email: userData.email, name: userData.name, isAdmin });
       return { success: true };
     } catch (error) {
       console.error('Register error:', error);
@@ -37,6 +39,11 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // For testing: toggle admin status
+  const toggleAdmin = () => {
+    setUser(prev => prev ? { ...prev, isAdmin: !prev.isAdmin } : null);
   };
 
   // Mock forgot password function
@@ -65,7 +72,8 @@ export const AuthProvider = ({ children }) => {
     login,
     register,
     logout,
-    forgotPassword
+    forgotPassword,
+    toggleAdmin
   };
 
   return (

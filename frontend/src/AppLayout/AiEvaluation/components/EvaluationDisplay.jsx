@@ -1,0 +1,60 @@
+import React from 'react';
+import AiEvaluationScore from '../../SubmissionsPage/Components/AiEvaluationScore';
+
+function EvaluationDisplay({ evaluation }) {
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="lg:col-span-2 space-y-8">
+        <section className="bg-obsidian border border-phantom p-6 rounded-sm">
+          <h4 className="text-slate-100 font-bold uppercase tracking-widest text-xs mb-4">Neural Analysis Summary</h4>
+          <p className="text-slate-400 text-sm leading-relaxed font-mono">
+            {evaluation.summary || "No automated summary available for this submission. The neural network is still processing the behavioral patterns."}
+          </p>
+        </section>
+
+        <section className="bg-obsidian border border-phantom p-6 rounded-sm">
+          <h4 className="text-slate-100 font-bold uppercase tracking-widest text-xs mb-4">Detected Behavioral Patterns</h4>
+          <div className="space-y-3">
+            {[
+              "Entropy analysis shows high potential for obfuscation.",
+              "API hooking detected in standard kernel libraries.",
+              "Unusual network traffic patterns (C2 beaconing)."
+            ].map((pattern, i) => (
+              <div key={i} className="flex items-start gap-3 text-[10px] font-mono border-l-2 border-toxic pl-4 py-1">
+                <span className="text-toxic font-black">[MATCH]</span>
+                <span className="text-slate-300">{pattern}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <div className="space-y-8">
+        <section className="bg-obsidian border border-phantom p-6 rounded-sm">
+          <h4 className="text-slate-100 font-bold uppercase tracking-widest text-xs mb-6">Confidence Score</h4>
+          <AiEvaluationScore percentage={evaluation.aiScorePercentage || "0%"} />
+        </section>
+
+        <section className="bg-obsidian border border-phantom p-6 rounded-sm">
+          <h4 className="text-slate-100 font-bold uppercase tracking-widest text-xs mb-4">Threat Intel Metadata</h4>
+          <div className="space-y-4">
+            <div>
+              <p className="text-[9px] text-slate-500 uppercase tracking-widest mb-1">Assigned Family</p>
+              <p className="text-toxic font-mono text-xs">{evaluation.family || "Unknown"}</p>
+            </div>
+            <div>
+              <p className="text-[9px] text-slate-500 uppercase tracking-widest mb-1">Threat Classification</p>
+              <p className="text-red-500 font-mono text-xs uppercase">{evaluation.threatLevel || "Normal"}</p>
+            </div>
+            <div>
+              <p className="text-[9px] text-slate-500 uppercase tracking-widest mb-1">Analysis Date</p>
+              <p className="text-slate-300 font-mono text-xs">{evaluation.date || "N/A"}</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+}
+
+export default EvaluationDisplay;
