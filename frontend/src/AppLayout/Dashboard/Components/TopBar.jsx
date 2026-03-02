@@ -1,7 +1,16 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const TopBar = ({ currentTime, formatDate, toggleSidebar, sidebarOpen }) => {
+const TopBar = ({ pageName, toggleSidebar, sidebarOpen }) => {
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const t = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  const formatDate = (d) => d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useRef(null);
 
@@ -34,7 +43,7 @@ const TopBar = ({ currentTime, formatDate, toggleSidebar, sidebarOpen }) => {
       <div className="flex items-center gap-2">
         <span className="font-code text-xs" style={{ color: '#475569' }}>CONTAGION</span>
         <span style={{ color: '#1E2233' }}>/</span>
-        <span className="font-code text-xs" style={{ color: '#22C55E' }}>Dashboard</span>
+        <span className="font-code text-xs" style={{ color: '#22C55E' }}>{pageName}</span>
       </div>
 
       {/* Right side */}
@@ -54,8 +63,8 @@ const TopBar = ({ currentTime, formatDate, toggleSidebar, sidebarOpen }) => {
           onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(30,34,51,0.7)'; e.currentTarget.style.color = '#64748B'; }}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
           </svg>
           <span
             className="absolute top-1 right-1 w-2 h-2 rounded-full"
@@ -137,9 +146,9 @@ const TopBar = ({ currentTime, formatDate, toggleSidebar, sidebarOpen }) => {
                   onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                    <polyline points="16 17 21 12 16 7"/>
-                    <line x1="21" y1="12" x2="9" y2="12"/>
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
                   </svg>
                   Sign Out
                 </button>

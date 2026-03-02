@@ -10,15 +10,6 @@ import PlusButton from './Components/Buttons';
 
 const DashboardPage = () => {
   const [sidebarOpen] = useState(true);
-  const [currentTime, setCurrentTime] = useState(new Date());
-
-  useEffect(() => {
-    const t = setInterval(() => setCurrentTime(new Date()), 1000);
-    return () => clearInterval(t);
-  }, []);
-
-  const formatTime = (d) => d.toLocaleTimeString('en-US', { hour12: false });
-  const formatDate = (d) => d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 
   // Mock data
   const stats = [
@@ -62,7 +53,7 @@ const DashboardPage = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-h-screen" style={{ marginLeft: sidebarOpen ? '220px' : '64px' }}>
-        <TopBar currentTime={currentTime} formatDate={formatDate} />
+        <TopBar pageName={"Dashboard"} />
 
         {/* Page body */}
         <main className="flex-1 p-6 space-y-6 relative z-10 overflow-auto">

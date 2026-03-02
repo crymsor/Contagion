@@ -26,15 +26,6 @@ function SubmissionsPage() {
   const [selectedSubmission, setSelectedSubmission] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [currentTime, setCurrentTime] = useState(new Date());
-
-  useEffect(() => {
-    const t = setInterval(() => setCurrentTime(new Date()), 1000);
-    return () => clearInterval(t);
-  }, []);
-
-  const formatDate = (d) => d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
@@ -76,7 +67,7 @@ function SubmissionsPage() {
       <div className="fixed inset-0 bg-grid-toxic pointer-events-none opacity-40" />
 
       <div style={{ marginLeft: contentMargin }} className="transition-all duration-300">
-        <TopBar currentTime={currentTime} formatDate={formatDate} />
+        <TopBar pageName={"Submissions"} />
 
         <div className="min-h-screen bg-abyss text-slate-100 px-6 py-12 md:px-12 lg:px-20">
           <div className="flex flex-row justify-between items-end mb-10 pb-6 border-b border-phantom">
