@@ -5,6 +5,7 @@ import AiEvaluationModal from "./Components/AiEvaluationModal";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../Dashboard/Components/Sidebar.jsx";
 import TopBar from "../Dashboard/Components/TopBar.jsx";
+import PlusButton from "../Dashboard/Components/Buttons.jsx";
 
 const INITIAL_SUBMISSIONS = [
   { id: 1, name: "WannaCry Network Patterns", description: "Analysis of SMB exploitation.", status: "Under Review", family: "Ransomware", threatLevel: "Critical", aiScorePercentage: "98%", reviewCount: 2, date: "2024-02-13" },
@@ -85,7 +86,7 @@ function SubmissionsPage() {
                 <h3 className="text-3xl font-black text-slate-100 tracking-tighter uppercase">My Submissions</h3>
               </div>
             </div>
-            <button className="bg-toxic text-void font-black px-6 py-3 rounded-sm uppercase tracking-widest text-[10px]">New Submission</button>
+            <PlusButton text={"New Submission"} />
           </div>
 
           <div className="mb-12">
