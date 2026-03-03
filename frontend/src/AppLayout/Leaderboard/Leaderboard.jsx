@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Sidebar from '../Dashboard/Components/Sidebar.jsx'
+import TopBar from '../Dashboard/Components/TopBar.jsx';
 
 function Leaderboard() {
 
@@ -13,7 +14,7 @@ function Leaderboard() {
       <div className="fixed inset-0 bg-grid-toxic pointer-events-none opacity-40" />
 
       <div style={{ marginLeft: contentMargin }} className="transition-all duration-300">
-
+        <TopBar pageName={"Leaderboard"} />
 
       </div>
 
