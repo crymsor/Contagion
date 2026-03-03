@@ -8,6 +8,7 @@ import AiEvaluationPage from './AppLayout/AiEvaluation/AiEvaluationPage';
 import AdminDashboardPage from './AppLayout/Dashboard/AdminDashboardPage';
 import { AuthProvider } from './context/AuthContext';
 import AdminRoute from './AppLayout/AdminRoute';
+import Leaderboard from './AppLayout/Leaderboard/Leaderboard';
 
 /* ── App Component ─────────────────────────────────────────── */
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/submissions" element={<SubmissionsPage />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/submissions/:submissionId/ai-evaluation" element={<AiEvaluationPage />} />
           <Route path="/admin" element={
             <AdminRoute>
