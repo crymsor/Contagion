@@ -1,42 +1,51 @@
-import Dropdown from "../../SubmissionsPage/Components/Dropdown";
 import { useState } from "react";
+import Dropdown from "../../SubmissionsPage/Components/Dropdown";
 
 function FilterBar() {
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    onFilterChange(name, value);
-  };
-
   const [filters, setFilters] = useState({
-    query: "",
-    status: "all",
-    family: "all",
+    view: "leaderboard",
     duration: "all",
   });
 
   const handleFilterChange = (name, value) => {
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
-  const selectBaseStyles = "bg-obsidian border border-phantom text-slate-300 py-2 px-3 focus:outline-none focus:border-toxic cursor-pointer font-mono text-xs uppercase tracking-wider";
-  return (
-    <>
 
-      <div className="flex flex-wrap items-center gap-3 p-4 bg-void/50 border-b border-phantom">
-        {/*Filter Dropdown*/}
+  return (
+    <div className="flex items-center gap-6">
+      {/* View Switch Buttons */}
+      <div className="flex gap-2 bg-obsidian rounded-md overflow-hidden border border-phantom">
+        {["leaderboard", "achievements"].map((option) => (
+          <button
+            key={option}
+            onClick={() => handleFilterChange("view", option)}
+            className={`px-6 py-2 text-xs font-mono uppercase tracking-wider transition-colors duration-200 ${filters.view === option
+              ? "bg-toxic text-black"
+              : "bg-obsidian text-slate-300 hover:bg-toxic/20"
+              }`}
+          >
+            {option === "leaderboard" ? "Leaderboard" : "Achievements"}
+          </button>
+        ))}
+      </div>
+
+      {/* Dropdown Container (reserve space) */}
+      <div
+        style={{ minWidth: "140px" }}
+        className={`${filters.view === "leaderboard" ? "" : "invisible"}`}
+      >
         <Dropdown
           name="duration"
           value={filters.duration}
-          onChange={handleChange}
+          onChange={(e) => handleFilterChange("duration", e.target.value)}
           options={[
             { value: "all", label: "All Time" },
             { value: "month", label: "Monthly" },
             { value: "week", label: "Weekly" },
           ]}
-        />
-      </div>
-
-    </>
-  )
+        />      </div>
+    </div>
+  );
 }
 
 export default FilterBar;
