@@ -3,18 +3,22 @@ import { StatusBadge, SeverityBadge } from './HooksAndBadges';
 const SubmissionsTable = ({ submissions }) => {
   return (
     <div
-      className="xl:col-span-2 rounded-xl overflow-hidden animate-fade-up"
+      className="rounded-lg overflow-hidden animate-fade-up"
       style={{
         background: 'rgba(12,13,20,0.8)',
         border: '1px solid rgba(30,34,51,0.8)',
         backdropFilter: 'blur(16px)',
         animationDelay: '200ms',
+        margin: 0, // ✅ No margins - spacing handled by parent grid
       }}
     >
-      {/* Table header */}
+      {/* Table Header - no margins */}
       <div
-        className="flex items-center justify-between px-5 py-4"
-        style={{ borderBottom: '1px solid rgba(30,34,51,0.6)' }}
+        className="flex items-center justify-between px-6 py-4"
+        style={{ 
+          borderBottom: '1px solid rgba(30,34,51,0.6)',
+          margin: 0, // ✅ No margins
+        }}
       >
         <div className="flex items-center gap-3">
           <h3 className="font-display text-sm font-bold tracking-wider" style={{ color: '#F1F5F9' }}>
@@ -27,7 +31,10 @@ const SubmissionsTable = ({ submissions }) => {
             {submissions.length} SAMPLES
           </span>
         </div>
-        <a href="/submissions" className="font-code text-xs transition-colors duration-200" style={{ color: '#475569' }}
+        <a 
+          href="/submissions" 
+          className="font-code text-xs transition-colors duration-200" 
+          style={{ color: '#475569' }}
           onMouseEnter={(e) => (e.currentTarget.style.color = '#22C55E')}
           onMouseLeave={(e) => (e.currentTarget.style.color = '#475569')}
         >
@@ -35,13 +42,23 @@ const SubmissionsTable = ({ submissions }) => {
         </a>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full">
+      {/* Table Container - no margins */}
+      <div className="overflow-x-auto" style={{ margin: 0 }}>
+        <table className="w-full" style={{ margin: 0 }}>
           <thead>
-            <tr style={{ borderBottom: '1px solid rgba(30,34,51,0.5)' }}>
+            <tr style={{ 
+              borderBottom: '1px solid rgba(30,34,51,0.5)',
+              margin: 0,
+            }}>
               {['Sample Hash', 'Malware Family', 'Threat', 'Status', 'Score', 'Time'].map((col) => (
-                <th key={col} className="px-4 py-3 text-left font-code text-[9px] tracking-[0.2em] uppercase" style={{ color: '#475569' }}>
+                <th 
+                  key={col} 
+                  className="px-6 py-3 text-left font-code text-[9px] tracking-[0.2em] uppercase" 
+                  style={{ 
+                    color: '#475569',
+                    margin: 0, // ✅ No margins
+                  }}
+                >
                   {col}
                 </th>
               ))}
@@ -55,26 +72,29 @@ const SubmissionsTable = ({ submissions }) => {
                 style={{
                   borderBottom: '1px solid rgba(30,34,51,0.3)',
                   animationDelay: `${300 + i * 60}ms`,
+                  margin: 0, // ✅ No margins
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.02)')}
                 onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
               >
-                <td className="px-4 py-3">
+                <td className="px-6 py-4" style={{ margin: 0 }}>
                   <span className="font-code text-xs" style={{ color: '#22C55E' }}>
                     {s.hash}
                     <span style={{ color: '#1E2233' }}>...</span>
                   </span>
                 </td>
-                <td className="px-4 py-3">
-                  <span className="font-body text-sm font-medium" style={{ color: '#F1F5F9' }}>{s.family}</span>
+                <td className="px-6 py-4" style={{ margin: 0 }}>
+                  <span className="font-body text-sm" style={{ color: '#F1F5F9' }}>
+                    {s.family}
+                  </span>
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-6 py-4" style={{ margin: 0 }}>
                   <SeverityBadge level={s.threat} />
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-6 py-4" style={{ margin: 0 }}>
                   <StatusBadge status={s.status} />
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-6 py-4" style={{ margin: 0 }}>
                   {s.score !== null ? (
                     <div className="flex items-center gap-2">
                       <div
@@ -89,14 +109,18 @@ const SubmissionsTable = ({ submissions }) => {
                           }}
                         />
                       </div>
-                      <span className="font-code text-xs" style={{ color: '#94A3B8' }}>{s.score}</span>
+                      <span className="font-code text-xs" style={{ color: '#94A3B8' }}>
+                        {s.score}
+                      </span>
                     </div>
                   ) : (
                     <span className="font-code text-xs" style={{ color: '#1E2233' }}>—</span>
                   )}
                 </td>
-                <td className="px-4 py-3">
-                  <span className="font-code text-xs" style={{ color: '#475569' }}>{s.date}</span>
+                <td className="px-6 py-4" style={{ margin: 0 }}>
+                  <span className="font-code text-xs" style={{ color: '#475569' }}>
+                    {s.date}
+                  </span>
                 </td>
               </tr>
             ))}
