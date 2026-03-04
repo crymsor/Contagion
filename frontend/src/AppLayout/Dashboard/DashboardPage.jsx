@@ -63,7 +63,7 @@ const DashboardPage = () => {
               <h2 className="font-display text-2xl font-bold" style={{ color: '#F1F5F9' }}>
                 Welcome back,{' '}
                 <span style={{ color: '#22C55E', textShadow: '0 0 20px rgba(34,197,94,0.4)' }}>
-                  Rafeel
+                  Mr Epstein 
                 </span>
               </h2>
               <p className="font-body text-sm mt-1" style={{ color: '#475569' }}>
