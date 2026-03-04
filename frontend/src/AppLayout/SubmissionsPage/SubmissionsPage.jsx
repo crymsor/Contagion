@@ -29,7 +29,7 @@ function SubmissionsPage() {
 
   const handleViewDetails = (submission) => {
     setSelectedSubmission(submission);
-    navigate(`/post/${selectedSubmission.id}`);
+    navigate(`/post/${submission.id}`);
   }
 
   const handleOpenEvaluation = (submission) => {
@@ -84,14 +84,14 @@ function SubmissionsPage() {
             <div className="h-[1px] flex-grow bg-phantom"></div>
           </div>
 
-            {filteredSubmissions.map((item) => (
-              <Submitted
-                key={item.id}
-                {...item}
-                onOpenAiEval={() => handleOpenEvaluation(item)}
-                gotoPost={() => handleViewDetails(item)}
-              />
-            ))}
+          {filteredSubmissions.map((item) => (
+            <Submitted
+              key={item.id}
+              {...item}
+              onOpenAiEval={() => handleOpenEvaluation(item)}
+              gotoPost={() => handleViewDetails(item)}
+            />
+          ))}
 
           {filteredSubmissions.length === 0 && (
             <div className="col-span-full py-20 text-center border border-dashed border-phantom">
