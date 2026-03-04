@@ -2,12 +2,34 @@ import { useState } from 'react';
 import Sidebar from '../Dashboard/Components/Sidebar.jsx'
 import TopBar from '../Dashboard/Components/TopBar.jsx';
 import FilterBar from './Components/FilterBar.jsx';
+import PositionCard from './Components/PositionCard.jsx';
 
 function Leaderboard() {
 
   const [sidebarOpen] = useState(true);
 
   const contentMargin = sidebarOpen ? '220px' : '64px';
+
+  const leaderboardData = Array.from({ length: 10 }, (_, i) => ({
+    position: i + 1,
+    username: `User_${i + 1}`,
+    userpfp: "/pfp1.png",
+    trophies: Math.floor(Math.random() * 50),
+    analyses: Math.floor(Math.random() * 40),
+    reviews: Math.floor(Math.random() * 30),
+    avgScore: Math.floor(Math.random() * 100),
+  }));
+
+  const currentUser = {
+    position: 17,
+    username: "You",
+    userpfp: "/pfp1.png",
+    trophies: 22,
+    analyses: 15,
+    reviews: 9,
+    avgScore: 81,
+  };
+
   return (
     <>
       <Sidebar isOpen={sidebarOpen} />
@@ -32,6 +54,22 @@ function Leaderboard() {
               <FilterBar />
             </div>
           </div>
+
+          <div className="flex flex-col gap-2">
+            {leaderboardData.map((user) => (
+              <PositionCard
+                key={user.position}
+                {...user}
+              />
+            ))}
+          </div>
+          <div className="sticky bottom-0 mt-6 pt-4 bg-abyss">
+            <div className="border-t border-phantom/40 pt-4">
+              <PositionCard {...currentUser} />
+            </div>
+          </div>
+
+
 
         </div>
       </div>
