@@ -1,9 +1,9 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import AuthLayout from './AuthLayout';
 import InputField from './InputField';
-import CustomButton from './CustomButton';
 import PasswordStrength, { usePasswordStrength } from './PasswordStrength';
+import SuccessView from './SuccessView';
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
@@ -11,6 +11,7 @@ const RegisterForm = () => {
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
   const canvasRef = useRef(null);
 
   // Purple-tinted orbs for register page
@@ -32,13 +33,29 @@ const RegisterForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
+      setError('Please fill in all fields');
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords don't match.");
       return;
     }
+
+    if (strength < 2) {
+      setError('Password is too weak. Use uppercase, numbers, and symbols');
+      return;
+    }
+
     setLoading(true);
-    setTimeout(() => setLoading(false), 1500);
-    console.log('register:', formData);
+    // Simulate API call
+    setTimeout(() => {
+      setLoading(false);
+      setIsSuccess(true);
+      console.log('register:', formData);
+    }, 1500);
   };
 
   const inputStyle = (field) => ({
@@ -50,24 +67,38 @@ const RegisterForm = () => {
 
   const pwMismatch = formData.confirmPassword && formData.password !== formData.confirmPassword;
 
+  if (isSuccess) {
+    return (
+      <AuthLayout orbs={orbs} canvasRef={canvasRef}>
+        <SuccessView
+          title="Account Created!"
+          subtitle="Verification link sent to:"
+          email={formData.email}
+          showEmail={true}
+          linkText="← Back to Login"
+          linkTo="/login"
+          iconColor="#8B5CF6"
+          additionalInfo="Please click the link in your email to verify your account."
+          showAdditionalInfo={true}
+          redirectTo={null}
+        />
+      </AuthLayout>
+    );
+  }
+
   return (
-    <AuthLayout
-      orbs={orbs}
-      title="CONTAGION"
-      subtitle="Create Analyst Account"
-      canvasRef={canvasRef}
-    >
-      {/* Icon */}
-      <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl mb-5" style={{
-        background: 'rgba(139,92,246,0.08)',
-        border: '1px solid rgba(139,92,246,0.2)',
-        boxShadow: '0 0 20px rgba(139,92,246,0.1)',
-      }}>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M12 2L4 6v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V6l-8-4z"
-            stroke="#8B5CF6" strokeWidth="1.5" strokeLinejoin="round" fill="rgba(139,92,246,0.1)"/>
-          <path d="M9 12l2 2 4-4" stroke="#8B5CF6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
+    <AuthLayout orbs={orbs} canvasRef={canvasRef}>
+      {/* Title and Subtitle */}
+      <div className="text-center mb-8">
+        <h1
+          className="font-display text-2xl tracking-[0.3em] font-bold mb-1"
+          style={{ color: '#F1F5F9', textShadow: '0 0 30px rgba(139,92,246,0.2)' }}
+        >
+          CONTAGION
+        </h1>
+        <p className="font-code text-[10px] tracking-widest uppercase" style={{ color: '#334155' }}>
+          Create Analyst Account
+        </p>
       </div>
 
       {/* Error */}
@@ -166,9 +197,42 @@ const RegisterForm = () => {
           </div>
         </div>
 
-        <CustomButton type="submit" disabled={loading} loading={loading}>
-          {loading ? 'Creating account...' : '→ Create Account'}
-        </CustomButton>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full py-3 rounded-md font-mono text-xs uppercase tracking-wider font-bold transition-colors duration-200 flex items-center justify-center gap-2"
+          style={{
+            background: loading ? 'rgba(139, 92, 246, 0.15)' : '#8B5CF6',
+            color: loading ? 'rgba(139, 92, 246, 0.4)' : '#FFFFFF',
+            cursor: loading ? 'not-allowed' : 'pointer',
+          }}
+          onMouseEnter={(e) => {
+            if (!loading) {
+              e.currentTarget.style.background = '#A78BFA';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!loading) {
+              e.currentTarget.style.background = '#8B5CF6';
+            }
+          }}
+        >
+          {loading ? (
+            <>
+              <span
+                className="w-3.5 h-3.5 border-2 rounded-full inline-block"
+                style={{
+                  borderColor: 'rgba(139, 92, 246, 0.33)',
+                  borderTopColor: 'transparent',
+                  animation: 'spinSlow 0.7s linear infinite',
+                }}
+              />
+              Creating account...
+            </>
+          ) : (
+            '→ Create Account'
+          )}
+        </button>
       </form>
 
       <div className="mt-6 pt-5 text-center" style={{ borderTop: '1px solid rgba(30,34,51,0.7)' }}>
@@ -181,6 +245,13 @@ const RegisterForm = () => {
           </Link>
         </p>
       </div>
+
+      <style>{`
+        @keyframes spinSlow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </AuthLayout>
   );
 };

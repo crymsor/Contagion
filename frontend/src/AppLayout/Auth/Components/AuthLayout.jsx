@@ -72,13 +72,6 @@ const AuthLayout = ({
           {/* Header */}
           {title && (
             <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl mb-5" style={{
-                background: 'rgba(139,92,246,0.08)',
-                border: '1px solid rgba(139,92,246,0.2)',
-                boxShadow: '0 0 20px rgba(139,92,246,0.1)',
-              }}>
-                {icon}
-              </div>
               <h1
                 className="font-display text-2xl tracking-[0.3em] font-bold mb-1"
                 style={{ color: '#F1F5F9', textShadow: '0 0 30px rgba(139,92,246,0.2)' }}
