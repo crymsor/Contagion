@@ -12,6 +12,7 @@ import AdminRoute from './AppLayout/AdminRoute';
 import Leaderboard from './AppLayout/Leaderboard/Leaderboard';
 import Sidebar from './AppLayout/Dashboard/Components/Sidebar.jsx';
 import TopBar from './AppLayout/Dashboard/Components/TopBar.jsx';
+import Post from './AppLayout/Post/Post';
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
