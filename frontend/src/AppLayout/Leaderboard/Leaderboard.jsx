@@ -1,14 +1,8 @@
 import { useState } from 'react';
-import Sidebar from '../Dashboard/Components/Sidebar.jsx'
-import TopBar from '../Dashboard/Components/TopBar.jsx';
 import PositionCard from './Components/PositionCard.jsx';
 import Dropdown from '../SubmissionsPage/Components/Dropdown';
 
 function Leaderboard() {
-
-  const [sidebarOpen] = useState(true);
-  const contentMargin = sidebarOpen ? '220px' : '64px';
-
   // Dropdown state
   const [duration, setDuration] = useState("all");
 
@@ -34,56 +28,46 @@ function Leaderboard() {
   };
 
   return (
-    <>
-      <Sidebar isOpen={sidebarOpen} />
-      <div className="fixed inset-0 bg-scanline pointer-events-none opacity-20" />
-      <div className="fixed inset-0 bg-grid-toxic pointer-events-none opacity-40" />
+    <div className="min-h-screen bg-abyss text-slate-100 px-6 py-12 md:px-12 lg:px-20">
+      <div className="flex flex-row justify-between items-center mb-10 pb-6 border-b border-phantom">
+        {/* Left: Heading */}
+        <div className="flex items-center gap-2">
+          <div className="w-1 h-6 bg-toxic shadow-[0_0_8px_#22C55E]"></div>
+          <h3 className="text-3xl font-black text-slate-100 tracking-tighter uppercase">
+            Leaderboard
+          </h3>
+        </div>
 
-      <div style={{ marginLeft: contentMargin }} className="transition-all duration-300">
-        <TopBar pageName={"Leaderboard"} />
-
-        <div className="min-h-screen bg-abyss text-slate-100 px-6 py-12 md:px-12 lg:px-20">
-          <div className="flex flex-row justify-between items-center mb-10 pb-6 border-b border-phantom">
-            {/* Left: Heading */}
-            <div className="flex items-center gap-2">
-              <div className="w-1 h-6 bg-toxic shadow-[0_0_8px_#22C55E]"></div>
-              <h3 className="text-3xl font-black text-slate-100 tracking-tighter uppercase">
-                Leaderboard
-              </h3>
-            </div>
-
-            {/* Right: Duration Dropdown */}
-            <div className="ml-6" style={{ minWidth: "140px" }}>
-              <Dropdown
-                name="duration"
-                value={duration}
-                onChange={(e) => setDuration(e.target.value)}
-                options={[
-                  { value: "all", label: "All Time" },
-                  { value: "month", label: "Monthly" },
-                  { value: "week", label: "Weekly" },
-                ]}
-              />
-            </div>
-          </div>
-
-          {/* Leaderboard Rows */}
-          <div className="flex flex-col gap-2">
-            {leaderboardData.map((user) => (
-              <PositionCard key={user.position} {...user} />
-            ))}
-          </div>
-
-          {/* Sticky Current User */}
-          <div className="sticky bottom-0 mt-6 pt-4 bg-abyss">
-            <div className="border-t border-phantom/40 pt-4">
-              <PositionCard {...currentUser} />
-            </div>
-          </div>
+        {/* Right: Duration Dropdown */}
+        <div className="ml-6" style={{ minWidth: "140px" }}>
+          <Dropdown
+            name="duration"
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+            options={[
+              { value: "all", label: "All Time" },
+              { value: "month", label: "Monthly" },
+              { value: "week", label: "Weekly" },
+            ]}
+          />
         </div>
       </div>
-    </>
-  )
+
+      {/* Leaderboard Rows */}
+      <div className="flex flex-col gap-2">
+        {leaderboardData.map((user) => (
+          <PositionCard key={user.position} {...user} />
+        ))}
+      </div>
+
+      {/* Sticky Current User */}
+      <div className="sticky bottom-0 mt-6 pt-4 bg-abyss">
+        <div className="border-t border-phantom/40 pt-4">
+          <PositionCard {...currentUser} />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default Leaderboard;
