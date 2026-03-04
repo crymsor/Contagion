@@ -1,7 +1,7 @@
 import AiEvaluationScore from "./AiEvaluationScore";
 import { useNavigate } from "react-router-dom";
 
-function Submitted({ id, name, description, status, family, threatLevel, aiScorePercentage, reviewCount, date, onOpenAiEval }) {
+function Submitted({ id, name, description, status, family, threatLevel, aiScorePercentage, reviewCount, date, onOpenAiEval, gotoPost }) {
   const navigate = useNavigate();
 
   // Logic to determine threat color based on the design system
@@ -46,7 +46,7 @@ function Submitted({ id, name, description, status, family, threatLevel, aiScore
             <div className="w-1.5 h-1.5 rounded-full bg-toxic animate-pulse"></div>
             <span className="text-[10px] text-viral font-bold uppercase tracking-widest">Neural Analysis</span>
           </div>
-          <button 
+          <button
             onClick={onOpenAiEval}
             className="text-[9px] text-toxic hover:underline font-mono uppercase tracking-tighter"
           >
@@ -67,13 +67,16 @@ function Submitted({ id, name, description, status, family, threatLevel, aiScore
         </div>
 
         <div id="submittedBottomRightPart" className="flex gap-4">
-          <button 
+          <button
             onClick={onOpenAiEval}
             className="bg-toxic/10 hover:bg-toxic/20 text-toxic border border-toxic/30 px-3 py-1.5 rounded-sm text-[10px] font-black uppercase tracking-widest transition-all"
           >
             AI EVAL
           </button>
-          <button id="submittedViewDetails" className="text-toxic hover:text-green-300 text-xs font-bold uppercase tracking-widest transition-colors flex items-center gap-1 group-hover:translate-x-1 duration-200">
+          <button
+            id="submittedViewDetails"
+            onClick={gotoPost}
+            className="text-toxic hover:text-green-300 text-xs font-bold uppercase tracking-widest transition-colors flex items-center gap-1 group-hover:translate-x-1 duration-200">
             View Details <span>→</span>
           </button>
         </div>

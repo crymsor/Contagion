@@ -27,6 +27,11 @@ function SubmissionsPage() {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
 
+  const handleViewDetails = (submission) => {
+    setSelectedSubmission(submission);
+    navigate(`/post/${submission.id}`);
+  }
+
   const handleOpenEvaluation = (submission) => {
     setSelectedSubmission(submission);
     setIsModalOpen(true);
@@ -84,6 +89,7 @@ function SubmissionsPage() {
               key={item.id}
               {...item}
               onOpenAiEval={() => handleOpenEvaluation(item)}
+              gotoPost={() => handleViewDetails(item)}
             />
           ))}
 
