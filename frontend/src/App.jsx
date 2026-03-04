@@ -23,7 +23,7 @@ function App() {
 
 
   const mainLayoutPages = ['/dashboard', '/submissions', '/leaderboard', '/sandbox', '/reviews', '/admin'];
-  
+
   const shouldUseMainLayout = (path) => {
     return mainLayoutPages.some(page => path.startsWith(page));
   };
@@ -36,7 +36,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          
+          <Route path="/post/:postId" element={<Post />} />
 
           <Route
             path="/dashboard"
@@ -46,9 +46,9 @@ function App() {
                 <div className="fixed inset-0 bg-grid-toxic pointer-events-none opacity-40" />
                 {/* Scanlines */}
                 <div className="fixed inset-0 bg-scanline pointer-events-none opacity-20" />
-                
+
                 <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
-                <div 
+                <div
                   className="flex-1 flex flex-col min-h-screen transition-all duration-300"
                   style={{ marginLeft: sidebarOpen ? '220px' : '64px' }}
                 >
@@ -58,7 +58,7 @@ function App() {
               </div>
             }
           />
-          
+
           <Route
             path="/submissions"
             element={
@@ -67,9 +67,9 @@ function App() {
                 <div className="fixed inset-0 bg-grid-toxic pointer-events-none opacity-40" />
                 {/* Scanlines */}
                 <div className="fixed inset-0 bg-scanline pointer-events-none opacity-20" />
-                
+
                 <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
-                <div 
+                <div
                   className="flex-1 flex flex-col min-h-screen transition-all duration-300"
                   style={{ marginLeft: sidebarOpen ? '220px' : '64px' }}
                 >
@@ -79,7 +79,7 @@ function App() {
               </div>
             }
           />
-          
+
           <Route
             path="/leaderboard"
             element={
@@ -88,9 +88,9 @@ function App() {
                 <div className="fixed inset-0 bg-grid-toxic pointer-events-none opacity-40" />
                 {/* Scanlines */}
                 <div className="fixed inset-0 bg-scanline pointer-events-none opacity-20" />
-                
+
                 <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
-                <div 
+                <div
                   className="flex-1 flex flex-col min-h-screen transition-all duration-300"
                   style={{ marginLeft: sidebarOpen ? '220px' : '64px' }}
                 >
@@ -100,7 +100,7 @@ function App() {
               </div>
             }
           />
-          
+
           <Route
             path="/submissions/:submissionId/ai-evaluation"
             element={
@@ -109,9 +109,9 @@ function App() {
                 <div className="fixed inset-0 bg-grid-toxic pointer-events-none opacity-40" />
                 {/* Scanlines */}
                 <div className="fixed inset-0 bg-scanline pointer-events-none opacity-20" />
-                
+
                 <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
-                <div 
+                <div
                   className="flex-1 flex flex-col min-h-screen transition-all duration-300"
                   style={{ marginLeft: sidebarOpen ? '220px' : '64px' }}
                 >
@@ -121,7 +121,7 @@ function App() {
               </div>
             }
           />
-          
+
           <Route
             path="/admin"
             element={
@@ -130,9 +130,9 @@ function App() {
                 <div className="fixed inset-0 bg-grid-toxic pointer-events-none opacity-40" />
                 {/* Scanlines */}
                 <div className="fixed inset-0 bg-scanline pointer-events-none opacity-20" />
-                
+
                 <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
-                <div 
+                <div
                   className="flex-1 flex flex-col min-h-screen transition-all duration-300"
                   style={{ marginLeft: sidebarOpen ? '220px' : '64px' }}
                 >
@@ -144,7 +144,7 @@ function App() {
               </div>
             }
           />
-          
+
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </AuthProvider>
