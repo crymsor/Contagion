@@ -1,8 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import AuthLayout from './AuthLayout';
 import InputField from './InputField';
-import CustomButton from './CustomButton';
 import SuccessView from './SuccessView';
 
 const ForgotPasswordForm = () => {
@@ -22,12 +21,19 @@ const ForgotPasswordForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!email) {
+      alert('Please enter your email address');
+      return;
+    }
+
     setLoading(true);
+    // Simulate API call
     setTimeout(() => {
       setLoading(false);
       setSubmitted(true);
+      console.log('forgot:', email);
     }, 1200);
-    console.log('forgot:', email);
   };
 
   const inputStyle = (field) => ({
@@ -37,84 +43,122 @@ const ForgotPasswordForm = () => {
     boxShadow: focused === field ? '0 0 0 3px rgba(34,211,238,0.07)' : 'none',
   });
 
-  return (
-    <AuthLayout
-      orbs={orbs}
-      title="CONTAGION"
-      subtitle="Password Recovery"
-      canvasRef={canvasRef}
-      containerStyle={{
-        background: submitted
-          ? 'radial-gradient(circle at center, rgba(13,110,128,0.15) 0%, rgba(7,8,13,0.9) 100%)'
-          : undefined,
-      }}
-    >
-      {submitted ? (
+  if (submitted) {
+    return (
+      <AuthLayout
+        orbs={orbs}
+        canvasRef={canvasRef}
+        containerStyle={{
+          background: 'radial-gradient(circle at center, rgba(13,110,128,0.15) 0%, rgba(7,8,13,0.9) 100%)'
+        }}
+      >
         <SuccessView
           title="Check Your Inbox"
           subtitle="Reset link sent to:"
           email={email}
+          showEmail={true}
           linkText="← Back to Login"
           linkTo="/login"
-          iconColor="#22C55E"
+          iconColor="#22D3EE"
+          additionalInfo="Link expires in 15 minutes."
+          showAdditionalInfo={true}
         />
-      ) : (
-        <>
-          {/* Icon */}
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl mb-5" style={{
-            background: 'rgba(34,211,238,0.07)',
-            border: '1px solid rgba(34,211,238,0.2)',
-            boxShadow: '0 0 20px rgba(34,211,238,0.1)',
-          }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <rect x="3" y="11" width="18" height="11" rx="2" stroke="#22D3EE" strokeWidth="1.5"/>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="#22D3EE" strokeWidth="1.5" strokeLinecap="round"/>
-              <circle cx="12" cy="16" r="1.5" fill="#22D3EE"/>
-            </svg>
-          </div>
+      </AuthLayout>
+    );
+  }
 
-          <p className="font-body text-sm mb-8 text-center" style={{ color: '#475569' }}>
-            Enter your email to receive a reset link.
-          </p>
+  return (
+    <AuthLayout
+      orbs={orbs}
+      canvasRef={canvasRef}
+    >
+      {/* Title and Subtitle */}
+      <div className="text-center mb-8">
+        <h1
+          className="font-display text-2xl tracking-[0.3em] font-bold mb-1"
+          style={{ color: '#F1F5F9', textShadow: '0 0 30px rgba(34,211,238,0.2)' }}
+        >
+          CONTAGION
+        </h1>
+        <p className="font-code text-[10px] tracking-widest uppercase" style={{ color: '#334155' }}>
+          Password Recovery
+        </p>
+      </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <InputField
-              label="Email Address"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onFocus={() => setFocused('email')}
-              onBlur={() => setFocused(null)}
-              placeholder="you@contagion.sec"
-              required
-              customStyle={inputStyle('email')}
-              focusedColor="rgba(34,211,238,0.4)"
-            />
+      <p className="font-body text-sm mb-8 text-center" style={{ color: '#475569' }}>
+        Enter your email to receive a reset link.
+      </p>
 
-            <CustomButton
-              type="submit"
-              disabled={loading}
-              loading={loading}
-              variant="cyan"
-              style={{ background: loading ? 'rgba(34,211,238,0.12)' : '#0891B2' }}
-            >
-              {loading ? 'Sending...' : '→ Send Reset Link'}
-            </CustomButton>
-          </form>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <InputField
+          label="Email Address"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          onFocus={() => setFocused('email')}
+          onBlur={() => setFocused(null)}
+          placeholder="you@contagion.sec"
+          required
+          customStyle={inputStyle('email')}
+          focusedColor="rgba(34,211,238,0.4)"
+        />
 
-          <div className="mt-6 pt-5 text-center" style={{ borderTop: '1px solid rgba(30,34,51,0.7)' }}>
-            <Link
-              to="/login"
-              className="font-code text-xs transition-colors duration-150"
-              style={{ color: '#22D3EE' }}
-              onMouseEnter={e => e.currentTarget.style.color='#67E8F9'}
-              onMouseLeave={e => e.currentTarget.style.color='#22D3EE'}
-            >
-              ← Back to login
-            </Link>
-          </div>
-        </>
-      )}
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full py-3 rounded-md font-mono text-xs uppercase tracking-wider font-bold transition-colors duration-200 flex items-center justify-center gap-2"
+          style={{
+            background: loading ? 'rgba(34, 211, 238, 0.12)' : '#0891B2',
+            color: loading ? 'rgba(34, 211, 238, 0.4)' : '#FFFFFF',
+            cursor: loading ? 'not-allowed' : 'pointer',
+          }}
+          onMouseEnter={(e) => {
+            if (!loading) {
+              e.currentTarget.style.background = '#22D3EE';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!loading) {
+              e.currentTarget.style.background = '#0891B2';
+            }
+          }}
+        >
+          {loading ? (
+            <>
+              <span
+                className="w-3.5 h-3.5 border-2 rounded-full inline-block"
+                style={{
+                  borderColor: 'rgba(34, 211, 238, 0.33)',
+                  borderTopColor: 'transparent',
+                  animation: 'spinSlow 0.7s linear infinite',
+                }}
+              />
+              Sending...
+            </>
+          ) : (
+            '→ Send Reset Link'
+          )}
+        </button>
+      </form>
+
+      <div className="mt-6 pt-5 text-center" style={{ borderTop: '1px solid rgba(30,34,51,0.7)' }}>
+        <Link
+          to="/login"
+          className="font-code text-xs transition-colors duration-150"
+          style={{ color: '#22D3EE' }}
+          onMouseEnter={e => e.currentTarget.style.color='#67E8F9'}
+          onMouseLeave={e => e.currentTarget.style.color='#22D3EE'}
+        >
+          ← Back to login
+        </Link>
+      </div>
+
+      <style>{`
+        @keyframes spinSlow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </AuthLayout>
   );
 };

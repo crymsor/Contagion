@@ -1,15 +1,15 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import AuthLayout from './AuthLayout';
 import InputField from './InputField';
-import CustomButton from './CustomButton';
-import PasswordStrength from './PasswordStrength';
+import SuccessView from './SuccessView';
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [focused, setFocused] = useState(null);
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const canvasRef = useRef(null);
 
   // Green theme orbs for login
@@ -22,9 +22,19 @@ const LoginForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!formData.email || !formData.password) {
+      alert('Please fill in all fields');
+      return;
+    }
+
     setLoading(true);
-    setTimeout(() => setLoading(false), 1500);
-    console.log('login:', formData);
+    // Simulate API call
+    setTimeout(() => {
+      setLoading(false);
+      setIsSuccess(true);
+      console.log('login:', formData);
+    }, 1500);
   };
 
   const inputStyle = (field) => ({
@@ -34,24 +44,41 @@ const LoginForm = () => {
     boxShadow: focused === field ? '0 0 0 3px rgba(34,197,94,0.07)' : 'none',
   });
 
+  if (isSuccess) {
+    return (
+      <AuthLayout orbs={orbs} canvasRef={canvasRef}>
+        <SuccessView
+          title="Successfully Logged In"
+          subtitle={null}
+          message="Welcome back! Your dashboard is loading..."
+          email={null}
+          showEmail={false}
+          showAdditionalInfo={false}
+          additionalInfo={null}
+          linkText="Go to Dashboard"
+          linkTo="/dashboard"
+          iconColor="#22C55E"
+          redirectTo="/dashboard"
+          redirectDelay={3000}
+          showLink={true}
+        />
+      </AuthLayout>
+    );
+  }
+
   return (
-    <AuthLayout
-      orbs={orbs}
-      title="CONTAGION"
-      subtitle="Secure Access Portal"
-      canvasRef={canvasRef}
-    >
-      {/* Icon */}
-      <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl mb-5" style={{
-        background: 'rgba(34,197,94,0.08)',
-        border: '1px solid rgba(34,197,94,0.2)',
-        boxShadow: '0 0 20px rgba(34,197,94,0.1)',
-      }}>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="2.5" fill="#22C55E"/>
-          <path d="M12 9.5a5 5 0 0 1 4.33 2.5M12 9.5a5 5 0 0 0-4.33 2.5M12 14.5a5 5 0 0 0 0 5M12 14.5a5 5 0 0 1 0 5M7.67 12a5 5 0 0 0-4.33 2.5M16.33 12a5 5 0 0 1 4.33 2.5"
-            stroke="#22C55E" strokeWidth="1.4" strokeLinecap="round"/>
-        </svg>
+    <AuthLayout orbs={orbs} canvasRef={canvasRef}>
+      {/* Title and Subtitle */}
+      <div className="text-center mb-8">
+        <h1
+          className="font-display text-2xl tracking-[0.3em] font-bold mb-1"
+          style={{ color: '#F1F5F9', textShadow: '0 0 30px rgba(34,197,94,0.2)' }}
+        >
+          CONTAGION
+        </h1>
+        <p className="font-code text-[10px] tracking-widest uppercase" style={{ color: '#334155' }}>
+          Secure Access Portal
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -108,16 +135,49 @@ const LoginForm = () => {
 
         <div className="flex items-center justify-between pt-1">
           <span className="font-code text-xs" style={{ color: '#334155' }}>Remember me</span>
-          <Link to="/forgot-password" className="font-code text-xs" style={{ color: '#22C55E' }}
+          <Link to="/forgot-password" className="font-code text-xs transition-colors duration-150" style={{ color: '#22C55E' }}
             onMouseEnter={e => e.currentTarget.style.color='#4ADE80'}
             onMouseLeave={e => e.currentTarget.style.color='#22C55E'}>
             Forgot password?
           </Link>
         </div>
 
-        <CustomButton type="submit" disabled={loading} loading={loading}>
-          {loading ? 'Authenticating...' : '→ Sign In'}
-        </CustomButton>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full py-3 rounded-md font-mono text-xs uppercase tracking-wider font-bold transition-colors duration-200 flex items-center justify-center gap-2"
+          style={{
+            background: loading ? 'rgba(34, 197, 94, 0.15)' : '#22C55E',
+            color: loading ? 'rgba(34, 197, 94, 0.4)' : '#000000',
+            cursor: loading ? 'not-allowed' : 'pointer',
+          }}
+          onMouseEnter={(e) => {
+            if (!loading) {
+              e.currentTarget.style.background = '#4ADE80';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!loading) {
+              e.currentTarget.style.background = '#22C55E';
+            }
+          }}
+        >
+          {loading ? (
+            <>
+              <span
+                className="w-3.5 h-3.5 border-2 rounded-full inline-block"
+                style={{
+                  borderColor: 'rgba(34, 197, 94, 0.33)',
+                  borderTopColor: 'transparent',
+                  animation: 'spinSlow 0.7s linear infinite',
+                }}
+              />
+              Authenticating...
+            </>
+          ) : (
+            '→ Sign In'
+          )}
+        </button>
       </form>
 
       <div className="mt-6 pt-5 text-center" style={{ borderTop: '1px solid rgba(30,34,51,0.7)' }}>
@@ -134,6 +194,13 @@ const LoginForm = () => {
           <span className="font-code text-[9px] tracking-widest uppercase" style={{ color: '#1A3526' }}>Encrypted Connection</span>
         </div>
       </div>
+
+      <style>{`
+        @keyframes spinSlow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </AuthLayout>
   );
 };
