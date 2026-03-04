@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import Sidebar from '../Dashboard/Components/Sidebar.jsx'
 import TopBar from '../Dashboard/Components/TopBar.jsx';
-import FilterBar from './Components/FilterBar.jsx';
 import PositionCard from './Components/PositionCard.jsx';
+import Dropdown from '../SubmissionsPage/Components/Dropdown';
 
 function Leaderboard() {
 
   const [sidebarOpen] = useState(true);
-
   const contentMargin = sidebarOpen ? '220px' : '64px';
 
+  // Dropdown state
+  const [duration, setDuration] = useState("all");
+
+  // Dummy leaderboard data
   const leaderboardData = Array.from({ length: 10 }, (_, i) => ({
     position: i + 1,
     username: `User_${i + 1}`,
@@ -49,31 +52,36 @@ function Leaderboard() {
               </h3>
             </div>
 
-            {/* Right: FilterBar */}
-            <div className="ml-6"> {/* adds horizontal breathing space */}
-              <FilterBar />
+            {/* Right: Duration Dropdown */}
+            <div className="ml-6" style={{ minWidth: "140px" }}>
+              <Dropdown
+                name="duration"
+                value={duration}
+                onChange={(e) => setDuration(e.target.value)}
+                options={[
+                  { value: "all", label: "All Time" },
+                  { value: "month", label: "Monthly" },
+                  { value: "week", label: "Weekly" },
+                ]}
+              />
             </div>
           </div>
 
+          {/* Leaderboard Rows */}
           <div className="flex flex-col gap-2">
             {leaderboardData.map((user) => (
-              <PositionCard
-                key={user.position}
-                {...user}
-              />
+              <PositionCard key={user.position} {...user} />
             ))}
           </div>
+
+          {/* Sticky Current User */}
           <div className="sticky bottom-0 mt-6 pt-4 bg-abyss">
             <div className="border-t border-phantom/40 pt-4">
               <PositionCard {...currentUser} />
             </div>
           </div>
-
-
-
         </div>
       </div>
-
     </>
   )
 }
