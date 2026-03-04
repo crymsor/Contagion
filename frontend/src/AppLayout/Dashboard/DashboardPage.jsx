@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Sidebar from './Components/Sidebar';
 import TopBar from './Components/TopBar';
 import StatCard from './Components/StatCard';
@@ -11,7 +11,6 @@ import PlusButton from './Components/Buttons';
 const DashboardPage = () => {
   const [sidebarOpen] = useState(true);
 
-  // Mock data
   const stats = [
     { label: 'Total Analyses', rawValue: '1247', suffix: '', change: '+14%', changePos: true, accentColor: '34,197,94', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>, delay: 0 },
     { label: 'Threats Detected', rawValue: '389', suffix: '', change: '+23%', changePos: true, accentColor: '239,68,68', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>, delay: 100 },
@@ -41,8 +40,7 @@ const DashboardPage = () => {
       className="min-h-screen flex relative"
       style={{ background: '#0A0B10' }}
     >
-
-      {/* Grid */}
+      {/* Grid Background */}
       <div className="fixed inset-0 bg-grid-toxic pointer-events-none opacity-40" />
 
       {/* Scanlines */}
@@ -53,43 +51,51 @@ const DashboardPage = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-h-screen" style={{ marginLeft: sidebarOpen ? '220px' : '64px' }}>
-        <TopBar pageName={"Dashboard"} />
+        <TopBar pageName="Dashboard" />
 
-        {/* Page body */}
-        <main className="flex-1 p-6 space-y-6 relative z-10 overflow-auto">
-          {/* Welcome row */}
-          <div className="flex items-start justify-between animate-fade-up">
-            <div>
-              <h2 className="font-display text-2xl font-bold" style={{ color: '#F1F5F9' }}>
-                Welcome back,{' '}
-                <span style={{ color: '#22C55E', textShadow: '0 0 20px rgba(34,197,94,0.4)' }}>
-                  Mr Epstein 
-                </span>
-              </h2>
-              <p className="font-body text-sm mt-1" style={{ color: '#475569' }}>
-                Here's your threat intelligence overview.
-              </p>
+        {/* Page Body */}
+        <main className="flex-1 overflow-auto relative z-10">
+          <div className="p-6 space-y-6">
+            {/* Welcome Section */}
+            <div className="flex items-start justify-between animate-fade-up">
+              <div>
+                <h2 className="font-display text-2xl font-bold" style={{ color: '#F1F5F9' }}>
+                  Welcome back,{' '}
+                  <span style={{ color: '#22C55E', textShadow: '0 0 20px rgba(34,197,94,0.4)' }}>
+                    Mr Epstein
+                  </span>
+                </h2>
+                <p className="font-body text-sm mt-2" style={{ color: '#475569' }}>
+                  Here's your threat intelligence overview.
+                </p>
+              </div>
+              <PlusButton text="New Analysis" />
             </div>
-            <PlusButton text={"New Analysis"} />
-          </div>
 
-          {/* Stats grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {stats.map((s, i) => <StatCard key={s.label} {...s} index={i} />)}
-          </div>
-
-          {/* Main grid */}
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-            <SubmissionsTable submissions={submissions} />
-
-            <div className="space-y-5">
-              <ActivityFeed items={activityFeed} />
-              <QuickActions />
+            {/* Stats Grid - 4 columns with consistent gap */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {stats.map((s, i) => (
+                <StatCard key={s.label} {...s} index={i} />
+              ))}
             </div>
-          </div>
 
-          {/* Rank panel */}
-          <RankPanel />
+            {/* Main Content Grid */}
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+              {/* Submissions Table - spans 2 columns on xl */}
+              <div className="xl:col-span-2">
+                <SubmissionsTable submissions={submissions} />
+              </div>
+
+              {/* Right Sidebar */}
+              <div className="space-y-6">
+                <ActivityFeed items={activityFeed} />
+                <QuickActions />
+              </div>
+            </div>
+
+            {/* Rank Panel - Full width */}
+            <RankPanel />
+          </div>
         </main>
       </div>
     </div>

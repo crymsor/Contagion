@@ -13,7 +13,7 @@ const StatCard = ({ label, rawValue, suffix = '', change, changePos, icon, accen
       ref={ref}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
-      className="rounded-xl p-5 relative overflow-hidden transition-glow animate-fade-up"
+      className="rounded-lg overflow-hidden relative transition-glow animate-fade-up"
       style={{
         background: 'rgba(12,13,20,0.8)',
         border: `1px solid ${tilt.hovering ? `rgba(${accentColor},0.25)` : 'rgba(30,34,51,0.9)'}`,
@@ -30,8 +30,10 @@ const StatCard = ({ label, rawValue, suffix = '', change, changePos, icon, accen
         style={{ background: `radial-gradient(circle, rgba(${accentColor},0.12), transparent)` }}
       />
 
-      <div className="relative z-10">
-        <div className="flex items-start justify-between mb-4">
+      {/* Content */}
+      <div className="relative z-10 p-6">
+        {/* Header with icon and change badge */}
+        <div className="flex items-start justify-between mb-6">
           <div
             className="w-10 h-10 rounded-lg flex items-center justify-center"
             style={{
@@ -42,19 +44,21 @@ const StatCard = ({ label, rawValue, suffix = '', change, changePos, icon, accen
             {icon}
           </div>
           <span
-            className="font-code text-xs px-2 py-0.5 rounded"
+            className="font-code text-xs px-2 py-1 rounded whitespace-nowrap"
             style={{
               background: changePos ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)',
               color: changePos ? '#4ADE80' : '#F87171',
               border: `1px solid ${changePos ? 'rgba(34,197,94,0.2)' : 'rgba(239,68,68,0.2)'}`,
             }}
           >
+Medium
             {change}
           </span>
         </div>
 
+        {/* Value and label */}
         <p
-          className="font-display text-3xl font-bold mb-1 tabular-nums"
+          className="font-display text-3xl font-bold mb-2 tabular-nums"
           style={{
             color: '#F1F5F9',
             textShadow: `0 0 20px rgba(${accentColor},0.3)`,
@@ -63,7 +67,9 @@ const StatCard = ({ label, rawValue, suffix = '', change, changePos, icon, accen
           {displayValue}
           {suffix}
         </p>
-        <p className="font-body text-sm" style={{ color: '#64748B' }}>{label}</p>
+        <p className="font-body text-sm" style={{ color: '#64748B' }}>
+          {label}
+        </p>
       </div>
     </div>
   );
