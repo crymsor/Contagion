@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 function PlusButton({ text }) {
   return (
     <Link
-      to="/submissions"
+      to="/create-post"
       className={`
         flex items-center gap-2
         px-6 py-2
