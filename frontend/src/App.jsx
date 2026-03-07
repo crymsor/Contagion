@@ -5,6 +5,8 @@ import LoginPage from './AppLayout/Auth/LoginPage';
 import RegisterPage from './AppLayout/Auth/RegisterPage';
 import ForgotPasswordPage from './AppLayout/Auth/ForgotPasswordPage';
 import DashboardPage from './AppLayout/Dashboard/DashboardPage';
+import FeedPage from './AppLayout/Feed/FeedPage';
+import CreatePost from './AppLayout/CreatePost/CreatePost';
 import SubmissionsPage from './AppLayout/SubmissionsPage/SubmissionsPage';
 import AiEvaluationPage from './AppLayout/AiEvaluation/AiEvaluationPage';
 import AdminDashboardPage from './AppLayout/Dashboard/AdminDashboardPage';
@@ -85,8 +87,26 @@ function App() {
             }
           />
 
+          <Route
+            path="/feed"
+            element={
+              <MainLayout pageName="Feed" sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar}>
+                <FeedPage />
+              </MainLayout>
+            }
+          />
+
+          <Route
+            path="/create-post"
+            element={
+              <MainLayout pageName="Create Analysis" sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar}>
+                <CreatePost />
+              </MainLayout>
+            }
+          />
+
           {/* Default redirect */}
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/" element={<Navigate to="/feed" replace />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
